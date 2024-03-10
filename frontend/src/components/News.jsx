@@ -9,7 +9,7 @@ const News = () => {
 
   const fetchData = async () => {
     let response = await axios.get(
-      `http://localhost:5000/api/contents?category=${category}`
+      `https://newsapi-iota.vercel.app/api/contents?category=${category}`
     );
     console.log(response.data);
     setArticles(response.data);
