@@ -1,77 +1,81 @@
-import React, { useState,useContext } from 'react';
+import React, { useState, useContext } from "react";
 import { AdminContext } from "../Context/AdminProvider";
-import './Login.css';
-import { useNavigate } from 'react-router-dom';
-
+import "./Login.css";
+import { useNavigate } from "react-router-dom";
 
 function Login() {
-  const navigate=useNavigate();
+  const navigate = useNavigate();
   const [signIn, setSignIn] = useState(true);
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [confirmPassword, setConfirmPassword] = useState('');
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
   const [error, setError] = useState(null);
   const { setIsAdmin } = useContext(AdminContext);
 
   const handleChange = (event) => {
-    if (event.target.name === 'email') {
+    if (event.target.name === "email") {
       setEmail(event.target.value);
-    } else if (event.target.name === 'password') {
+    } else if (event.target.name === "password") {
       setPassword(event.target.value);
-    } else if (event.target.name === 'confirmPassword') {
+    } else if (event.target.name === "confirmPassword") {
       setConfirmPassword(event.target.value);
     }
-  }
+  };
 
   const handleSubmit = async (event) => {
     event.preventDefault();
     if (signIn) {
       try {
-        const response = await fetch('http://localhost:5000/auth/login', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ email, password }),
-        });
+        const response = await fetch(
+          "https://newsapi-iota.vercel.app/auth/login",
+          {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ email, password }),
+          }
+        );
         const data = await response.json();
         console.log(data);
-        if (data.isAdmin===true) {
+        if (data.isAdmin === true) {
           setIsAdmin(true);
-          navigate("/admin")
+          navigate("/admin");
         } else {
           setIsAdmin(false);
-         navigate("/")
+          navigate("/");
         }
       } catch (error) {
         setError(error.response.data.message);
       }
     } else {
       if (password !== confirmPassword) {
-        setError('Passwords do not match');
+        setError("Passwords do not match");
         return;
       }
       try {
-        const response = await fetch('http://localhost:5000/auth/register', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ email, password }),
-        });
+        const response = await fetch(
+          "https://newsapi-iota.vercel.app/auth/register",
+          {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ email, password }),
+          }
+        );
         // const data = await response.json();
         console.log(response);
-        navigate("/")
-       
+        navigate("/");
       } catch (error) {
         setError(error.response.data.message);
       }
     }
-  }
+  };
 
   const handleToggle = () => {
     setSignIn(!signIn);
-    setEmail('');
-    setPassword('');
-    setConfirmPassword('');
+    setEmail("");
+    setPassword("");
+    setConfirmPassword("");
     setError(null);
-  }
+  };
 
   return (
     <div className="App">
@@ -81,7 +85,9 @@ function Login() {
       <main>
         {error && <p className="error">{error}</p>}
         <form onSubmit={handleSubmit} className="form">
-          <label htmlFor="email" className="label">Email</label>
+          <label htmlFor="email" className="label">
+            Email
+          </label>
           <input
             type="email"
             name="email"
@@ -90,7 +96,9 @@ function Login() {
             required
             className="input"
           />
-          <label htmlFor="password" className="label">Password</label>
+          <label htmlFor="password" className="label">
+            Password
+          </label>
           <input
             type="password"
             name="password"
@@ -99,9 +107,11 @@ function Login() {
             required
             className="input"
           />
-          {!signIn &&
+          {!signIn && (
             <>
-              <label htmlFor="confirmPassword" className="label">Confirm Password</label>
+              <label htmlFor="confirmPassword" className="label">
+                Confirm Password
+              </label>
               <input
                 type="password"
                 name="confirmPassword"
@@ -111,14 +121,13 @@ function Login() {
                 className="input"
               />
             </>
-          }
-          <button type="submit" className="button">{signIn ? 'Sign In' : 'Sign Up'}</button>
+          )}
+          <button type="submit" className="button">
+            {signIn ? "Sign In" : "Sign Up"}
+          </button>
         </form>
         <p className="link" onClick={handleToggle}>
-          {signIn
-            ? 'Don\'t have an account?'
-            : 'Already have an account?'
-          }
+          {signIn ? "Don't have an account?" : "Already have an account?"}
         </p>
       </main>
     </div>

@@ -11,15 +11,14 @@ const Admin = () => {
 
   const [category, setCategory] = useState("");
 
-
   const categories = [
-    { label: 'Business', value: 'business' },
-    { label: 'Entertainment', value: 'entertainment' },
-    { label: 'General', value: 'general' },
-    { label: 'Health', value: 'health' },
-    { label: 'Science', value: 'science' },
-    { label: 'Sports', value: 'sports' },
-    { label: 'Technology', value: 'technology' },
+    { label: "Business", value: "business" },
+    { label: "Entertainment", value: "entertainment" },
+    { label: "General", value: "general" },
+    { label: "Health", value: "health" },
+    { label: "Science", value: "science" },
+    { label: "Sports", value: "sports" },
+    { label: "Technology", value: "technology" },
   ];
 
   const handlePostTypeChange = (postType) => {
@@ -50,15 +49,17 @@ const Admin = () => {
     formData.append("description", content);
     formData.append("category", category);
     try {
-      const response = await axios.post("http://localhost:5000/api/upload", formData);
-      setMessage("Done"); 
-      setImage(null); 
-      setHeading(""); 
-      setContent(""); 
+      const response = await axios.post(
+        "https://newsapi-iota.vercel.app/api/upload",
+        formData
+      );
+      setMessage("Done");
+      setImage(null);
+      setHeading("");
+      setContent("");
       setSelectedPostType("post");
-  
     } catch (error) {
-      setMessage("Error"); 
+      setMessage("Error");
       console.error("Error submitting form", error);
     }
   };
@@ -100,7 +101,11 @@ const Admin = () => {
           />
         </div>
         <div>
-          <select id="category" value={category} onChange={handleCategoryChange}>
+          <select
+            id="category"
+            value={category}
+            onChange={handleCategoryChange}
+          >
             <option value="">Select Category</option>
             {categories.map((category) => (
               <option key={category.value} value={category.value}>

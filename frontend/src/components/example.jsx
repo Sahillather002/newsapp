@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from "react";
 
 function App() {
   const [contents, setContents] = useState([]);
@@ -9,26 +9,31 @@ function App() {
 
   async function fetchContents() {
     try {
-      const response = await fetch('http://localhost:5000/api/contents');
+      const response = await fetch(
+        "https://newsapi-iota.vercel.app/api/contents"
+      );
       const data = await response.json();
       console.log(data);
       setContents(data);
     } catch (error) {
-      console.error('Error fetching contents:', error);
+      console.error("Error fetching contents:", error);
     }
   }
 
-  const func=(url)=>{
-    const parts = url.split('/');
+  const func = (url) => {
+    const parts = url.split("/");
     const filename = parts[parts.length - 1];
     return filename;
-  }
+  };
   return (
     <div className="App">
       <div className="content-list">
-        {contents.map(content => (
+        {contents.map((content) => (
           <div className="content-item" key={content._id}>
-            <img src={`http://localhost:5000/${func(content.image)}`} alt={content.title} />
+            <img
+              src={`https://newsapi-iota.vercel.app/${func(content.image)}`}
+              alt={content.title}
+            />
           </div>
         ))}
       </div>
